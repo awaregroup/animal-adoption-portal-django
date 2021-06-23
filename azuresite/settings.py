@@ -84,8 +84,12 @@ AUTHENTICATION_BACKENDS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'taa_portal',
+        'USER' : 'pandaadmin@pg-panda-taa-sea-dev',
+        'PASSWORD' : 'P@$$W0rd!',
+        'HOST' : 'pg-panda-taa-sea-dev.postgres.database.azure.com',
+        'OPTIONS': { 'sslmode': 'require' }
     }
 }
 
