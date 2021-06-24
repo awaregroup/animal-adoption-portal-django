@@ -4,16 +4,45 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 import pandas
 
+import pymongo
+from pymongo import collation
+
 from adoptionsite.models import CartItem, Animal
+
+conn_str = "mongodb://cosmos-panda-taa-sea-dev:MNoNom1AQMPUI4CUmUypOM3MYCd3VhDaWyNnMJLV6vxhFzJm3lcmAm85bZpZLeD73PTlBi8N7JuYcbcucb2iPQ==@cosmos-panda-taa-sea-dev.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@cosmos-panda-taa-sea-dev@"
+
+client = pymongo.MongoClient(conn_str, serverSelectionTimeoutMS=5000)
+
+available_animals = []
+
+try:
+    print(client.server_info())
+    db = client['TAA_Portal']
+    collection = db['AvailableAnimals']
+
+    print(collection.count_documents({}))
+    
+    # Initial load of animals
+    for animal in collection.find():
+        print(animal)
+        available_animals.append(Animal(id=animal.Id, name=animal.Name, description=animal.Description, age=animal.Age))
+except Exception as e:
+    print(e)
+# except Exception:
+    print("Unable to connect to the server.")
 
 login_ids = [ 'pencil', 'flower', 'icecream', 'basketball', 'orange', 'placeholder' ]
 
-# Initial load of animals
-available_animals = []
-animals_df = pandas.read_csv('animals.csv', index_col='Id')
 
-for animal in animals_df.itertuples():
-    available_animals.append(Animal(id=animal.Index, name=animal.Name, description=animal.Description, age=animal.Age))
+# for animal in animals_df.itertuples():
+#     available_animals.append(Animal(id=animal.Index, name=animal.Name, description=animal.Description, age=animal.Age))
+
+# printf('the number of available animals is {len(available_animals)}')
+print(f'the number of available animals is {len(available_animals)}')
+
+
+# for animal in available_animals:
+#     print(animal)
 
 cart_items = [
     CartItem(id=0, quantity=0, name=available_animals[0].name),
