@@ -2,10 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-import pandas
 
 import pymongo
-from pymongo import collation
 
 from adoptionsite.models import CartItem, Animal
 
@@ -25,31 +23,20 @@ try:
     # Initial load of animals
     for animal in collection.find():
         print(animal)
-        available_animals.append(Animal(id=animal.Id, name=animal.Name, description=animal.Description, age=animal.Age))
+        available_animals.append(Animal(id=animal['Id'], name=animal['Name'], description=animal['Description'], age=animal['Age']))
 except Exception as e:
     print(e)
-# except Exception:
-    print("Unable to connect to the server.")
 
 login_ids = [ 'pencil', 'flower', 'icecream', 'basketball', 'orange', 'placeholder' ]
 
 
-# for animal in animals_df.itertuples():
-#     available_animals.append(Animal(id=animal.Index, name=animal.Name, description=animal.Description, age=animal.Age))
+for animal in available_animals:
+    print(animal.__dict__)
 
-# printf('the number of available animals is {len(available_animals)}')
-print(f'the number of available animals is {len(available_animals)}')
+cart_items = []
 
-
-# for animal in available_animals:
-#     print(animal)
-
-cart_items = [
-    CartItem(id=0, quantity=0, name=available_animals[0].name),
-    CartItem(id=1, quantity=0, name=available_animals[1].name),
-    CartItem(id=2, quantity=0, name=available_animals[2].name),
-    CartItem(id=3, quantity=0, name=available_animals[3].name)
-]
+for animal in available_animals:
+    cart_items.append(CartItem(id=1, quantity=0, name=animal.name))
 
 
 def index(request):
