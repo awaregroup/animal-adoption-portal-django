@@ -10,7 +10,7 @@ chardet==4.0.0
 # in dependency resolution in GitHub Actions
 # https://github.com/Azure/azure-cli/issues/16858
 cryptography==3.3.2
-Django==3.1.7
+Django==3.1.12
 idna==2.10
 isodate==0.6.0
 msal==1.11.0
