@@ -5,5 +5,5 @@ Requirements:
 - Git
 - Python 3.8.x
 - Azure CLI
-- Django 3.1.x
+- Django 4.1.x
 - Docker (only for the final challenge)
